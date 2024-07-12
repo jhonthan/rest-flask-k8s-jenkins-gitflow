@@ -1,0 +1,34 @@
+# DaemonSet https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: setup-hosts
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      name: setup-hosts
+  template:
+    metadata:
+      labels:
+        name: setup-hosts
+    spec:
+      initContainers:
+      - name: setup-hosts
+        image: busybox
+        command:
+          - /bin/sh
+          - -c
+          - |
+            grep jenkins /tmp/hosts || echo '172.20.0.50 argocd.localhost.com jenkins.localhost.com gitea.localhost.com sonarqube.localhost.com harbor.localhost.com' >> /tmp/hosts
+        volumeMounts:
+        - name: etc
+          mountPath: /tmp/hosts
+          subPath: hosts
+      containers:
+      - image: "gcr.io/google-containers/pause:2.0"
+        name: pause
+      volumes:
+      - name: etc
+        hostPath:
+          path: /etc

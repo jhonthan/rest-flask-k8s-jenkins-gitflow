@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: Pod
+spec:
+  serviceAccountName: jenkins-ci
+  containers:
+  - name: python
+    image: python:3.9.12-alpine3.15  
+    command:
+    - sleep
+    args:
+    - infinity
+  - name: sonar-scanner-cli
+    image: sonarsource/sonar-scanner-cli:5.0.1
+    command:
+    - sleep
+    args:
+    - infinity
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug
+    command:
+    - sleep
+    args:
+    - infinity
+    volumeMounts:
+      - name: harbor-credentials
+        mountPath: /kaniko/.docker
+      - name: jenkins-artifacts
+        mountPath: /artifacts
+  - name: alpine
+    image: alpine
+    command:
+    - sleep
+    args:
+    - infinity
+    volumeMounts:
+      - name: jenkins-artifacts
+        mountPath: /artifacts
+  - name: crane
+    image: gcr.io/go-containerregistry/crane:debug
+    command:
+    - sleep
+    args:
+    - infinity
+    volumeMounts:
+      - name: harbor-credentials
+        mountPath: /root/.docker/config.json
+        subPath: config.json
+      - name: jenkins-artifacts
+        mountPath: /artifacts
+  - name: helm
+    image: alpine/helm:3.14.2
+    command:
+    - sleep
+    args:
+    - infinity
+    volumeMounts:      
+      - name: jenkins-artifacts
+        mountPath: /artifacts
+  hostAliases:
+  - ip: "172.20.0.50"
+    hostnames:
+    - "gitea.localhost.com"
+    - "sonarqube.localhost.com"
+    - "harbor.localhost.com"
+  volumes:
+    - name: harbor-credentials
+      secret:
+        secretName: harbor-credentials
+        items:
+          - key: .dockerconfigjson # Renomeia secret para config.json
+            path: config.json
+    - name: jenkins-artifacts
+      persistVolumeClaim:
+        claimName: jenkins-artifacts

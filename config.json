@@ -1,0 +1,7 @@
+{
+    "auths": {
+      "harbor.localhost.com": {
+        "auth": "YWRtaW46SGFyYm9yMTIzNDU="
+      }
+    }
+  }

@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: restapi-flask-ingress
+spec:
+  rules:
+  - host: api.localhost.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: restapi-flask
+            port:
+              number: 5000

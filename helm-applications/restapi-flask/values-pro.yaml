@@ -1,0 +1,33 @@
+replicaCount: 1
+
+appPort: 5000
+
+image:
+  registry: harbor.localhost.com/jhonthanlocal/restapi-flask
+  tag: v0.0.0
+
+environmentVariables:
+  - name: MONGODB_DB
+    value: api
+  - name: MONGODB_HOST
+    value: mongodb
+  - name: MONGODB_USERNAME
+    value: api
+  - name: MONGODB_PASSWORD
+    value: api
+
+livenessProbe: {}
+
+readinessProbe: {}
+
+ingress:
+  enabled: false
+
+mongo:
+  auth:
+    usernames:
+      - api
+    password: 
+      - api
+    databases: 
+      - api

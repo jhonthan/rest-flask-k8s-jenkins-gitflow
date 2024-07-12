@@ -1,0 +1,22 @@
+- hosts: mongodb
+  become: yes
+  pre_tasks:
+    - name: Install pip3
+      apt:
+        update_cache: true
+        name: python3-pip
+        state: present
+    - name: Install pymongo
+      pip:
+        name: pymongo
+  vars:
+    mongodb_version: 5.0
+    replicaset: false
+  vars_files:
+    - vars.yml
+  roles:
+    - community.mongodb.mongodb_linux
+    - community.mongodb.mongodb_repository
+    - community.mongodb.mongodb_install
+    - community.mongodb.mongodb_mongod
+    - community.mongodb.mongodb_auth
