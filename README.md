@@ -6,7 +6,7 @@ The trigger started with the code stored in the Gitea, and based on the webhook 
 Before storing the image in Harbor, using the API of Trivy is possible to scan the image built previously to find the critical vulnerabilities, if the image is Correct without Criticals vulnerabilities the image is stored in Harbor and the deployment in Kubernetes is started with ArgoCD monitoring the new commit in the Gitea repository.
 
 
-![Screenshot](Screenshot/REST_API_Jenkins_Gitflow.png)
+![Screenshot](Screenshot/REST_API_Jenkins_Gitflow.jpg)
 
 ---
 
